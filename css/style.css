@@ -564,14 +564,29 @@ body {
 ================================ */
 
 @media (max-width: 420px) {
+    .controls {
+        gap: 4px;
+        padding: 5px;
+        max-width: calc(100vw - 10px);
+    }
 
-    .controls .secondary:nth-last-child(-n+2) {
-        display: none;
+    .control {
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+    }
+
+    .page-button {
+        width: 70px;
+        font-size: 12px;
+    }
+
+    .secondary {
+        font-size: 18px;
     }
 
     .book-stage {
         width: 98vw;
-
         height: calc(100vh - 130px);
     }
 }
