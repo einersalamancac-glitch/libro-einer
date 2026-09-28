@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewpor
+        t-fit=cover,user-scalable=no">
+    <meta name="theme-color" content="#000">
+    <t itle>Los juegos del hambre — Lector
+        </title>
+        <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app" id="app">
+        <header class="topbar" id="topbar">
+            <div class="brand">LOS JUEGOS DEL HAMBRE</div>
+            <div class="page-status">
+                <span id="pageLabel">Página 1 / 333</span><span id="percent">0%</span>
+            </div>
+        </header>
+        <main class="reader">
+            <div class="book-stage" id="bookStage">
+                <div class="book-shadow"></div>
+                <div class="book" id="book">
+                    <div class="paper under-paper" id="underPaper">
+                        <article class="page-content" id="underContent"></article>
+                    </div>
+                    <div class="paper current-paper" id="currentPaper">
+                        <article class="page-content" id="currentContent">
+
+                        </article>
+                        <div class="page-curl"></div>
+                    </div>
+                    <div class="paper previous-paper" id="previousPaper">
+                        <article class="page-content" id="previousContent">
+
+                        </article>
+                        <div class="page-curl previous-curl"></div>
+                    </div>
+                </div>
+                <div class="hint" id="hint">Desliza o arrastra la página</div>
+            </div>
+        </main>
+        <div class="progress-wrap">
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <nav class="controls">
+            <button id="prevBtn" class="control" aria-label="Página anterior">‹
+
+            </button>
+            <button id="gotoBtn" class="control page-button">
+                <span id="controlPage">1</span><small>/ 333</small>
+            </button><button id="nextBtn" class="control" aria-label="Página siguiente">›</button><button id="zoomOut"
+                class="control secondary">−</button><button id="zoomIn" class="control secondary">+</button><button
+                id="fullscreenBtn" class="control secondary">⛶</button>
+        </nav>
+        <div class="dialog hidden" id="gotoDialog">
+            <div class="dialog-card"><button class="dialog-close" id="closeDialog">×</button>
+                <h2>Ir a página</h2><label for="pageInput">Número de página</label><input id="pageInput" type="number"
+                    min="1" max="333" inputmode="numeric" value="1"><button id="goBtn" class="go">Abrir página</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/book-data.js"></script>
+    <script src="js/reader.js"></script>
+</body>
+
+</html>

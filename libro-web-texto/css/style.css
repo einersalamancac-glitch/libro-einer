@@ -1,0 +1,610 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    background: #171819;
+    color: #d1cec5;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    overscroll-behavior: none;
+    touch-action: none;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+    background: #171819;
+}
+
+/* ================================
+   BARRA SUPERIOR
+================================ */
+
+.topbar {
+    height: 54px;
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    background: #202123;
+
+    border-bottom: 1px solid #303134;
+
+    z-index: 30;
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.brand {
+    color: #c8c5bc;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: .08em;
+}
+
+.page-status {
+    display: flex;
+    gap: 14px;
+
+    color: #999a9c;
+
+    font-size: 13px;
+}
+
+/* ================================
+   ÁREA DEL LIBRO
+================================ */
+
+.reader {
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px 18px 75px;
+
+    overflow: hidden;
+
+    background: #171819;
+}
+
+.book-stage {
+    width: min(920px, 94vw);
+
+    height:
+        min(80vh, calc(100vh - 165px));
+
+    min-height: 390px;
+
+    position: relative;
+
+    touch-action: none;
+
+    perspective: 1800px;
+
+    user-select: none;
+}
+
+/* ================================
+   SOMBRA DEL LIBRO
+================================ */
+
+.book-shadow {
+    position: absolute;
+
+    left: 3%;
+    right: 3%;
+    top: 4%;
+    bottom: 1%;
+
+    background: #050506;
+
+    border-radius: 5px;
+
+    filter: blur(22px);
+
+    opacity: .75;
+
+    transform:
+        translateY(18px)
+        scale(.98);
+
+    pointer-events: none;
+}
+
+/* ================================
+   CANVAS DEL LIBRO
+================================ */
+
+.book-canvas {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    background: #08090a;
+
+    border: 1px solid #303236;
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.42),
+        inset 0 0 0 1px rgba(255,255,255,.015);
+
+    touch-action: none;
+
+    user-select: none;
+
+    cursor: grab;
+}
+
+.book-canvas:active {
+    cursor: grabbing;
+}
+
+/* ================================
+   CONTENIDO ORIGINAL OCULTO
+================================ */
+
+/*
+   El texto sigue existiendo en HTML/JS,
+   pero ahora Canvas se encarga de dibujarlo.
+*/
+
+.paper {
+    display: none !important;
+}
+
+/* ================================
+   INDICACIÓN
+================================ */
+
+.hint {
+    position: absolute;
+
+    left: 50%;
+    bottom: -28px;
+
+    transform: translateX(-50%);
+
+    white-space: nowrap;
+
+    color: #66686a;
+
+    font:
+        12px system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    opacity: 1;
+
+    transition: opacity .4s;
+
+    pointer-events: none;
+}
+
+.hint.hide {
+    opacity: 0;
+}
+
+/* ================================
+   PROGRESO
+================================ */
+
+.progress-wrap {
+    position: absolute;
+
+    left: 18px;
+    right: 18px;
+
+    bottom: 64px;
+
+    height: 3px;
+
+    background: #303236;
+
+    border-radius: 4px;
+
+    z-index: 30;
+}
+
+.progress-bar {
+    width: 0;
+    height: 100%;
+
+    background: #898b8e;
+
+    border-radius: 4px;
+
+    transition: width .2s ease;
+}
+
+/* ================================
+   CONTROLES
+================================ */
+
+.controls {
+    position: absolute;
+
+    left: 50%;
+    bottom: 9px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 9px;
+
+    background: rgba(31,32,34,.96);
+
+    border: 1px solid #303236;
+
+    border-radius: 16px;
+
+    z-index: 40;
+
+    backdrop-filter: blur(10px);
+}
+
+.control {
+    width: 43px;
+    height: 40px;
+
+    border: 1px solid #3a3c3f;
+
+    border-radius: 10px;
+
+    background: #242629;
+
+    color: #c9c6bd;
+
+    cursor: pointer;
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    transition:
+        background .15s ease,
+        transform .1s ease;
+}
+
+.control:hover {
+    background: #303236;
+}
+
+.control:active {
+    transform: scale(.94);
+}
+
+.control:disabled {
+    opacity: .25;
+
+    cursor: not-allowed;
+}
+
+.page-button {
+    width: 92px;
+
+    font-size: 15px;
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.page-button small {
+    color: #77797c;
+}
+
+.secondary {
+    font-size: 20px;
+}
+
+/* ================================
+   DIALOGO
+================================ */
+
+.dialog {
+    position: fixed;
+
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,.78);
+
+    z-index: 100;
+}
+
+.dialog.hidden {
+    display: none;
+}
+
+.dialog-card {
+    width: min(360px,92vw);
+
+    position: relative;
+
+    padding: 28px;
+
+    background: #202123;
+
+    border: 1px solid #36383b;
+
+    border-radius: 16px;
+
+    color: #d0cec6;
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.6);
+}
+
+.dialog-card h2 {
+    margin: 0 0 20px;
+}
+
+.dialog-card label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #999a9c;
+
+    font-size: 13px;
+}
+
+.dialog-card input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+
+    background: #0c0d0e;
+
+    border: 1px solid #3a3c3f;
+
+    border-radius: 10px;
+
+    color: #d0cec6;
+
+    font-size: 18px;
+}
+
+.go {
+    width: 100%;
+    height: 46px;
+
+    margin-top: 14px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background: #c7c4ba;
+
+    color: #18191b;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.dialog-close {
+    position: absolute;
+
+    top: 8px;
+    right: 12px;
+
+    background: transparent;
+
+    border: 0;
+
+    color: #999a9c;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+/* ================================
+   PANTALLA COMPLETA
+================================ */
+
+.fullscreen .topbar {
+    display: none;
+}
+
+.fullscreen .reader {
+    padding-top: 10px;
+}
+
+.fullscreen .book-stage {
+    width: min(1100px,96vw);
+    height: 94vh;
+}
+
+/* ================================
+   CELULAR
+================================ */
+
+@media (max-width: 700px) {
+
+    .topbar {
+        height: 48px;
+        min-height: 48px;
+
+        padding: 0 12px;
+    }
+
+    .brand {
+        max-width: 55%;
+
+        overflow: hidden;
+
+        white-space: nowrap;
+
+        text-overflow: ellipsis;
+
+        font-size: 10px;
+    }
+
+    .page-status {
+        gap: 7px;
+
+        font-size: 11px;
+    }
+
+    .reader {
+        padding:
+            10px
+            7px
+            76px;
+    }
+
+    .book-stage {
+        width: 97vw;
+
+        height:
+            min(83vh, calc(100vh - 130px));
+
+        min-height: 0;
+    }
+
+    .controls {
+        gap: 5px;
+
+        padding: 6px;
+    }
+
+    .control {
+        width: 39px;
+        height: 38px;
+
+        font-size: 24px;
+    }
+
+    .page-button {
+        width: 76px;
+
+        font-size: 13px;
+    }
+
+    .progress-wrap {
+        left: 8px;
+        right: 8px;
+
+        bottom: 58px;
+    }
+
+    .hint {
+        bottom: -22px;
+
+        font-size: 10px;
+    }
+}
+
+/* ================================
+   CELULARES PEQUEÑOS
+================================ */
+
+@media (max-width: 420px) {
+
+    .controls .secondary:nth-last-child(-n+2) {
+        display: none;
+    }
+
+    .book-stage {
+        width: 98vw;
+
+        height: calc(100vh - 130px);
+    }
+}
+
+/* ================================
+   MODO HORIZONTAL
+================================ */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+    .topbar {
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .reader {
+        padding:
+            5px
+            8px
+            54px;
+    }
+
+    .book-stage {
+        width: min(85vw, 1000px);
+
+        height: calc(100vh - 82px);
+    }
+
+    .controls {
+        bottom: 4px;
+    }
+
+    .progress-wrap {
+        bottom: 49px;
+    }
+}
